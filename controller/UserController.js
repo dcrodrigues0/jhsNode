@@ -1,4 +1,5 @@
 const User = require('../model/User');
+
 module.exports = class UserController {
 
     constructor(server){
@@ -38,24 +39,43 @@ module.exports = class UserController {
         this.server.get('/getuserschedule/:id', respond);
     }
 
-    insertUser(){
+    insertUser(restify){
         function respond(req, res, next) {
             const user = new User();
             var userData = req.body;
-            console.log(req)
-            /*user.insertUser(userData,(user)=>{
-                res.send(user);
+            if (!req.is('application/json')) {
+                return next(
+                    new errors.InvalidContentError("Expects 'application/json'"),
+                );
+            }
+            user.insertUser(userData,(status)=>{
+                res.send(status);
                 next();
-            });*/
+            });
         }
+        this.server.use(restify.plugins.bodyParser());
         this.server.post('/insertuser',respond);
     }
 
-    loadRoutes(){
+    deleteUser(){
+        function respond(req, res, next) {
+            const user = new User();
+            user.deleteUser(req.params.id,(status)=>{
+                res.send(status);
+                next();
+            });
+        }
+        this.server.del('/deleteuser/:id',respond);
+    }
+
+    
+
+    loadRoutes(restify){
         this.getListAllUsers();
         this.getListUserByID();
         this.getListUserAndScheduleByID();
-        this.insertUser();
+        this.insertUser(restify);
+        this.deleteUser();
     }
 
 }

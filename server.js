@@ -8,7 +8,7 @@ class Server {
         var server = restify.createServer();   
         let user = new UserController(server);
 
-        user.loadRoutes();
+        user.loadRoutes(restify);
 
         server.listen(8080, function() {
             console.log('%s listening at %s', server.name, server.url);

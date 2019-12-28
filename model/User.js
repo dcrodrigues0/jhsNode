@@ -100,11 +100,45 @@ module.exports = class User{
 
         await sequelize.query(`INSERT INTO USER (NAME, EMAIL, CELLPHONE, SPASSWORD, SUPERUSER)
             VALUES ('${userData.name}', '${userData.email}', '${userData.cellphone}', '${userData.spassword}', ${userData.superuser});`, 
-            { type: sequelize.QueryTypes.SELECT})
-        .then(user => {
-            callback(user);
+            { type: sequelize.QueryTypes.INSERT})
+        .then(result => {
+            callback("ok");
         }).catch((err)=>{
-            console.log("Cannot do the query");
+            console.log("Cannot do the query err");
+        });
+
+        database.closeConnectionDB(sequelize);
+    }
+
+    async deleteUser(id_user, callback){
+        const database = new Connection();
+        const sequelize = database.connectDB();
+
+        await sequelize.query(`DELETE FROM USER WHERE ID_USER = ${id_user};`,{ type: sequelize.QueryTypes.DELETE})
+        .then(result => {
+            callback("ok");
+        }).catch((err)=>{
+            console.log("Cannot do the query err");
+        });
+
+        database.closeConnectionDB(sequelize);
+    }
+
+    async updateUser(userData, callback){
+        const database = new Connection();
+        const sequelize = database.connectDB();
+
+        await this.listUserByID(userData.id,(user)=>{
+            sequelize.query(`UPDATE USER SET NAME = '${userData.name? userData.name : user.NAME}',
+                             EMAIL = '${userData.email? userData.email : user.EMAIL}',
+                             CELLPHONE = '${userData.cellphone? userData.cellphone : user.CELLPHONE}',
+                             SPASSWORD = '${userData.spassword? userData.spassword : user.SPASSWORD}', SUPERUSER = ${userData.superuser? userData.superuser : user.SUPERUSER}
+                             WHERE ID_USER = ${userData.id};`,{ type: sequelize.QueryTypes.UPDATE})
+            .then(result => {
+                callback("ok");
+            }).catch((err)=>{
+                console.log("Cannot do the query err");
+            });
         });
 
         database.closeConnectionDB(sequelize);
