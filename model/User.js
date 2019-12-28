@@ -64,7 +64,7 @@ module.exports = class User{
         database.closeConnectionDB(sequelize);
     }
 
-    async listUserByID(id_user, callback){
+    async listUserByID(close,id_user, callback){
         const database = new Connection();
         const sequelize = database.connectDB();
 
@@ -75,7 +75,10 @@ module.exports = class User{
             console.log("Cannot do the query");
         });
 
-        database.closeConnectionDB(sequelize);
+        if(!close){
+            database.closeConnectionDB(sequelize);
+        }
+        
     }
 
     async listUserAndScheduleByID(id_user, callback){
@@ -124,24 +127,24 @@ module.exports = class User{
         database.closeConnectionDB(sequelize);
     }
 
-    async updateUser(userData, callback){
+    async updateUser(id_user,userData, callback){
         const database = new Connection();
         const sequelize = database.connectDB();
 
-        await this.listUserByID(userData.id,(user)=>{
-            sequelize.query(`UPDATE USER SET NAME = '${userData.name? userData.name : user.NAME}',
-                             EMAIL = '${userData.email? userData.email : user.EMAIL}',
-                             CELLPHONE = '${userData.cellphone? userData.cellphone : user.CELLPHONE}',
-                             SPASSWORD = '${userData.spassword? userData.spassword : user.SPASSWORD}', SUPERUSER = ${userData.superuser? userData.superuser : user.SUPERUSER}
-                             WHERE ID_USER = ${userData.id};`,{ type: sequelize.QueryTypes.UPDATE})
+        await this.listUserByID(true,id_user, (user)=>{
+            sequelize.query(`UPDATE USER SET NAME = '${userData.name? userData.name : user[0].NAME}',
+                             EMAIL = '${userData.email? userData.email : user[0].EMAIL}',
+                             CELLPHONE = '${userData.cellphone? userData.cellphone : user[0].CELLPHONE}',
+                             SPASSWORD = '${userData.spassword? userData.spassword : user[0].SPASSWORD}', SUPERUSER = ${userData.superuser? userData.superuser : user[0].SUPERUSER}
+                             WHERE ID_USER = ${id_user};`,{ type: sequelize.QueryTypes.UPDATE})
             .then(result => {
                 callback("ok");
+                database.closeConnectionDB(sequelize);
             }).catch((err)=>{
-                console.log("Cannot do the query err");
+                console.log("Cannot do the query ", err);
             });
         });
 
-        database.closeConnectionDB(sequelize);
     }
 
 }

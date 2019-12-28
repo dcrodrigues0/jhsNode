@@ -68,6 +68,24 @@ module.exports = class UserController {
         this.server.del('/deleteuser/:id',respond);
     }
 
+    updateUser(restify){
+        function respond(req, res, next) {
+            const user = new User();
+            var userData = req.body;
+            if (!req.is('application/json')) {
+                return next(
+                    new errors.InvalidContentError("Expects 'application/json'"),
+                );
+            }
+            user.updateUser(req.params.id,userData,(status)=>{
+                res.send(status);
+                next();
+            });
+        }
+        this.server.use(restify.plugins.bodyParser());
+        this.server.put('/updateuser/:id',respond);
+    }
+
     
 
     loadRoutes(restify){
@@ -76,6 +94,7 @@ module.exports = class UserController {
         this.getListUserAndScheduleByID();
         this.insertUser(restify);
         this.deleteUser();
+        this.updateUser(restify);
     }
 
 }
