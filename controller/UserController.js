@@ -20,7 +20,7 @@ module.exports = class UserController {
     getListUserByID(){
         function respond(req, res, next) {
             const user = new User();
-            user.listUserByID(req.params.id,(user)=>{
+            user.listUserByID(1,req.params.id,(user)=>{
                 res.send(user);
                 next();
             });

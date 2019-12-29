@@ -1,4 +1,3 @@
-const Sequelize = require('sequelize');
 const Connection = require('../database/Conection');
 module.exports = class User{
     
@@ -7,46 +6,6 @@ module.exports = class User{
         this.email = email;
         this.cellphone = cellphone;
         this.spassword = spassword;
-        this.superuser = superuser;
-    }
-
-    getName(){
-        return this.name;
-    }
-
-    getEmail(){
-        return this.email;
-    }
-
-    getCellphone(){
-        return this.cellphone;
-    }
-
-    getSpassword(){
-        return this.spassword;
-    }
-
-    getSuperuser(){
-        return this.superuser;
-    }
-
-    setName(name){
-        this.name = name;
-    }
-
-    setEmail(email){
-        this.email = email;
-    }
-
-    setCellphone(cellphone){
-        this.cellphone = cellphone;
-    }
-
-    setSpassword(spassword){
-        this.spassword = spassword;
-    }
-
-    setSuperuser(superuser){
         this.superuser = superuser;
     }
 
@@ -75,7 +34,7 @@ module.exports = class User{
             console.log("Cannot do the query");
         });
 
-        if(!close){
+        if(close === 1){
             database.closeConnectionDB(sequelize);
         }
         
@@ -131,7 +90,7 @@ module.exports = class User{
         const database = new Connection();
         const sequelize = database.connectDB();
 
-        await this.listUserByID(true,id_user, (user)=>{
+        await this.listUserByID(0,id_user, (user)=>{
             sequelize.query(`UPDATE USER SET NAME = '${userData.name? userData.name : user[0].NAME}',
                              EMAIL = '${userData.email? userData.email : user[0].EMAIL}',
                              CELLPHONE = '${userData.cellphone? userData.cellphone : user[0].CELLPHONE}',
