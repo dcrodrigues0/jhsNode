@@ -74,8 +74,10 @@ module.exports = class Schedule{
         const database = new Connection();
         const sequelize = database.connectDB();
         await this.listScheduleByID(0,id_schedule, (schedule)=>{
+            let dateFormatted = new Date(schedule[0].SCHEDULE_DATE).toISOString().slice(0, 19).replace('T', ' ');
+            console.log(dateFormatted)
             sequelize.query(`UPDATE SCHEDULE
-                SET SCHEDULE_DATE='${scheduleData.schedule_date? scheduleData.schedule_date : schedule[0].SCHEDULE_DATE}',
+                SET SCHEDULE_DATE='${scheduleData.schedule_date? scheduleData.schedule_date : dateFormatted}',
                 TYPE_SERVICE='${scheduleData.type_service? scheduleData.type_service : schedule[0].TYPE_SERVICE}', 
                 ID_USER=${scheduleData.id_user ? scheduleData.id_user : schedule[0].TYPE_SERVICE}
                 WHERE ID_SCHEDULE=${id_schedule};`,{ type: sequelize.QueryTypes.UPDATE})
