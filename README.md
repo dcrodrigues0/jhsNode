@@ -10,3 +10,4 @@
 <p><strong>2. </strong>npm install</p>
 <p><strong>3. </strong>change password and username of database at line 6 in <a href="https://github.com/dcrodrigues0/jhsNode/blob/1.0.0/database/Conection.js">Conection.js</a>
 <p><strong>4. </strong>npm start or npm run dev (required <a href="https://www.npmjs.com/package/nodemon">nodemon</a>)</p>
+<p><strong>5. </strong>I export examples of all requests <a href="https://github.com/dcrodrigues0/jhsNode/blob/1.0.0/exampleRequests.json">here</a> for you can import in <a href="https://insomnia.rest/">insomnia</a> or similar softwares</p>
