@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 module.exports = class Conection{
     
     connectDB(){
-        const sequelize = new Sequelize('jhsDB', 'root', 'baguvix1', {
+        const sequelize = new Sequelize('jhsDB', 'root', 'xxxx', {
             host: 'localhost',
             dialect: 'mysql'
         });
