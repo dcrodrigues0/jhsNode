@@ -1,6 +1,6 @@
 # jhsNode
 
-- A basic and simple backend for make schedules and register clients.
+- A basic and simple backend for make schedules and register users.
 
 # How work
 <p>Well, this is a simple NodeJS backend, i build it using <a href="http://restify.com/">Restify</a> to do Controllers and do the services, for the connection with database i use <a href="https://sequelize.org/master/">Sequelize</a> (you can find the scripts and details of database <a href="https://github.com/dcrodrigues0/jhsDatabase">here</a>)</p>
